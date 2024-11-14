@@ -1,0 +1,659 @@
+{
+	"info": {
+		"_postman_id": "ace92174-d862-4606-9513-465907d3232d",
+		"name": "AccuWeather",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31749483"
+	},
+	"item": [
+		{
+			"name": "City search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.json()[0].Key).to.eql(\"215854\");",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 600ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{baseUrl}}locations/v1/cities/search?q=Tel Aviv",
+					"host": [
+						"{{baseUrl}}locations"
+					],
+					"path": [
+						"v1",
+						"cities",
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "Tel Aviv"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1 Hour of Hourly Forecasts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Date\");",
+							"});",
+							"",
+							"pm.test('Count object = ' + pm.response.json().length, function(){",
+							"    pm.expect(pm.response.json().length).to.equal(1)",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}forecasts/v1/hourly/1hour/215854",
+					"host": [
+						"{{baseUrl}}forecasts"
+					],
+					"path": [
+						"v1",
+						"hourly",
+						"1hour",
+						"215854"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Current Conditions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.json()[0].IsDayTime).to.eql(false);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 800ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(800);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}currentconditions/v1/215854",
+					"host": [
+						"{{baseUrl}}currentconditions"
+					],
+					"path": [
+						"v1",
+						"215854"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Current Conditions for Top Cities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Count object = ' + pm.response.json().length, function(){",
+							"    pm.expect(pm.response.json().length).to.equal(50)",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"RateLimit-Limit\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}currentconditions/v1/topcities/50",
+					"host": [
+						"{{baseUrl}}currentconditions"
+					],
+					"path": [
+						"v1",
+						"topcities",
+						"50"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Historical Current Conditions (past 24 hours)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test('Count object = ' + pm.response.json().length, function(){",
+							"    pm.expect(pm.response.json().length).to.equal(24)",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}currentconditions/v1/215854/historical/24",
+					"host": [
+						"{{baseUrl}}currentconditions"
+					],
+					"path": [
+						"v1",
+						"215854",
+						"historical",
+						"24"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Autocomplete search",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Count object = ' + pm.response.json().length, function(){",
+							"    pm.expect(pm.response.json().length).to.equal(8)",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}locations/v1/cities/autocomplete?=Israel",
+					"host": [
+						"{{baseUrl}}locations"
+					],
+					"path": [
+						"v1",
+						"cities",
+						"autocomplete"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "Israel"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1 Day of Weather Alarms",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"[]\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}alarms/v1/1day/215854",
+					"host": [
+						"{{baseUrl}}alarms"
+					],
+					"path": [
+						"v1",
+						"1day",
+						"215854"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1 Day of Daily Index Values for a Specific Index",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.json()[0].ID).to.eql(17);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.json()[0].Category).to.eql(\"Low\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}indices/v1/daily/1day/215854/17",
+					"host": [
+						"{{baseUrl}}indices"
+					],
+					"path": [
+						"v1",
+						"daily",
+						"1day",
+						"215854",
+						"17"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10 Days of Daily Index Values for a Specific Index",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}indices/v1/daily/10day/215854/17",
+					"host": [
+						"{{baseUrl}}indices"
+					],
+					"path": [
+						"v1",
+						"daily",
+						"10day",
+						"215854",
+						"17"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15 Days of Daily Forecasts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}forecasts/v1/daily/15day/215854",
+					"host": [
+						"{{baseUrl}}forecasts"
+					],
+					"path": [
+						"v1",
+						"daily",
+						"15day",
+						"215854"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15 Days of Weather Alarms",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}alarms/v1/15day/215854",
+					"host": [
+						"{{baseUrl}}alarms"
+					],
+					"path": [
+						"v1",
+						"15day",
+						"215854"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List all Languages",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}translations/v1/languages",
+					"host": [
+						"{{baseUrl}}translations"
+					],
+					"path": [
+						"v1",
+						"languages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alerts by LocationKey",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}alerts/v1/215854",
+					"host": [
+						"{{baseUrl}}alerts"
+					],
+					"path": [
+						"v1",
+						"215854"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Radar and Satellite Imagery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"pm.test(\"Response time is less than 300ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}imagery/v1/maps/radsat/480x480/215854",
+					"host": [
+						"{{baseUrl}}imagery"
+					],
+					"path": [
+						"v1",
+						"maps",
+						"radsat",
+						"480x480",
+						"215854"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POI Search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 503\", function () {",
+							"    pm.response.to.have.status(503);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}locations/v1/poi/search?=Israel",
+					"host": [
+						"{{baseUrl}}locations"
+					],
+					"path": [
+						"v1",
+						"poi",
+						"search"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "Israel"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "Cc4S0AMns19ceUhITAzfm93GxUxn0N1i",
+				"type": "string"
+			},
+			{
+				"key": "in",
+				"value": "query",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "apikey",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api-key-my",
+			"value": "Cc4S0AMns19ceUhITAzfm93GxUxn0N1i",
+			"type": "string"
+		},
+		{
+			"key": "baseUrl",
+			"value": "http://dataservice.accuweather.com/",
+			"type": "string"
+		}
+	]
+}
