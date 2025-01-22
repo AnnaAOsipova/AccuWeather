@@ -12,14 +12,16 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <junit.version>5.7.2</junit.version>
-    <logback.version>1.5.13</logback.version>
-    <slf4j.version>2.0.4</slf4j.version>
-    <mockito.version>5.3.1</mockito.version>
-    <wiremock.version>1.58</wiremock.version>
+    <surefire-report.version>2.22.2</surefire-report.version>
     <assured.version>5.3.0</assured.version>
     <jackson.version>2.15.0</jackson.version>
     <surefire.version>2.22.2</surefire.version>
+    <allure.junit.version>2.22.1</allure.junit.version>
+    <aspectj.version>1.8.10</aspectj.version>
   </properties>
+
+  <!-- Архивирование -->
+  <packaging>jar</packaging>
 
   <dependencies>
 
@@ -56,52 +58,22 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Логирование -->
+    <!-- Allure -->
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>
-      <version>${logback.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>${logback.version}</version>
-    </dependency>
-
-    <!-- Мокирование -->
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>${mockito.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-junit-jupiter</artifactId>
-      <version>${mockito.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- WireMock -->
-    <dependency>
-      <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock</artifactId>
-      <version>${wiremock.version}</version>
-      <scope>test</scope>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-junit5</artifactId>
+      <version>${allure.junit.version}</version>
     </dependency>
   </dependencies>
 
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>${surefire-report.version}</version>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -116,8 +88,19 @@
         <version>${surefire.version}</version>
       </plugin>
 
+      <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>2.13.0</version>
+        <configuration>
+          <reportVersion>2.30.0</reportVersion>
+          <buildDirectory>/Users/annaosipova/Desktop/Studying/Автоматизация тестирования/AccuWeather</buildDirectory>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
+
 
   <repositories>
     <repository>
