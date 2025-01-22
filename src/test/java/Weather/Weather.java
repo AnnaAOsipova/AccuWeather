@@ -2,6 +2,7 @@
 package Weather;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -21,8 +22,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "MobileLink",
     "Link"
 })
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Weather {
+
+    private String DateTime;
 
     @JsonProperty("DateTime")
     private String dateTime;
