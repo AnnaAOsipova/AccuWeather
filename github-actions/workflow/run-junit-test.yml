@@ -1,4 +1,4 @@
-name: Demo project CI
+name: Demo project
 run-name: ${{ github.actor }} is testing CI GitHub Actions
 on: [push]
 jobs:
